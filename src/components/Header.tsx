@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import NavLinks from "./NavLinks";
+import Marquee from "./Marquee";
 
 export default function Header() {
   const [today, setToday] = useState("");
@@ -19,7 +20,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="border-b border-gray-200 bg-white">
+    <header className="border-b border-gray-200  bg-white ">
       {/* Logo + Auth */}
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex items-center gap-3">
@@ -57,6 +58,9 @@ export default function Header() {
 
       {/* Category Links */}
       <NavLinks />
+
+      {/* Price Marquee */}
+      <Marquee />
     </header>
   );
 }
