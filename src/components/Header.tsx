@@ -20,52 +20,56 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="border-b border-gray-200  bg-white ">
-      {/* Logo + Auth */}
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-700 text-xl">
-            🛒
-          </span>
+    <>
+      {/* Sticky Navigation */}
+      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
+        {/* Logo + Auth */}
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+          <Link href="/" className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-700 text-xl">
+              🛒
+            </span>
 
-          <div>
-            <h1 className="text-lg font-bold text-gray-900">
-              বাজার দর
-            </h1>
+            <div>
+              <h1 className="text-lg font-bold text-gray-900">
+                বাজার দর
+              </h1>
 
-            <p className="text-xs text-gray-500">
-              {today}
-            </p>
+              <p className="text-xs text-gray-500">
+                {today}
+              </p>
+            </div>
+          </Link>
+
+          <div className="flex items-center gap-2">
+            <Link
+              href="/signin"
+              className="rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              সাইন ইন
+            </Link>
+
+            <Link
+              href="/signup"
+              className="rounded-lg bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-800"
+            >
+              সাইন আপ
+            </Link>
           </div>
-        </Link>
-
-        <div className="flex items-center gap-2">
-          <Link
-            href="/signin"
-            className="rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          >
-            সাইন ইন
-          </Link>
-
-          <Link
-            href="/signup"
-            className="rounded-lg bg-green-700 px-3 py-2 text-sm font-semibold text-white hover:bg-green-800"
-          >
-            সাইন আপ
-          </Link>
         </div>
-      </div>
-      
-      {/* Category Links */}
-      <Suspense
-  fallback={
-    <div className="h-14 border-t border-gray-100" />
-  }
->
-  <NavLinks />
-</Suspense>
-      {/* Price Marquee */}
+
+        {/* Category Navigation */}
+        <Suspense
+          fallback={
+            <div className="h-14 border-t border-gray-100" />
+          }
+        >
+          <NavLinks />
+        </Suspense>
+      </header>
+
+      {/* Marquee: এটি sticky হবে না */}
       <Marquee />
-    </header>
+    </>
   );
 }

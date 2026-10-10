@@ -17,7 +17,7 @@ interface Product {
 }
 
 const API_URL =
-  "https://api.abcz.workers.dev/api/bazardor/products";
+  "https://openapi.programming-hero.com/api/bazardor/products";
 
 export default function Marquee() {
   const [products, setProducts] = useState<Product[]>([]);

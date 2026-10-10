@@ -3,7 +3,7 @@ import type {
   ProductDetail,
 } from "@/types/product.type";
 
-const API_URL = "https://api.abcz.workers.dev/api/bazardor/products";
+const API_URL = "https://openapi.programming-hero.com/api/bazardor/products";
 
 function readProducts(data: unknown): Product[] {
   if (Array.isArray(data)) {

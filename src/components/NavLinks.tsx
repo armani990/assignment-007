@@ -12,7 +12,7 @@ interface Category {
 }
 
 const API_URL =
-  "https://api.abcz.workers.dev/api/bazardor/categories";
+  "https://openapi.programming-hero.com/api/bazardor/categories";
 
 export default function NavLinks() {
   const pathname = usePathname();
