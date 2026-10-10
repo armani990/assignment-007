@@ -16,3 +16,14 @@ export interface Product {
     pct: number;
   };
 }
+
+export interface MarketPrice {
+  market: string;
+  division: string;
+  min: number;
+  max: number;
+}
+
+export interface ProductDetail extends Product {
+  markets: MarketPrice[];
+}
