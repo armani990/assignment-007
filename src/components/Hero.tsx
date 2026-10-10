@@ -45,12 +45,13 @@ export default function Hero() {
       {/* Right side image */}
       <div className="relative ml-auto h-64 w-full max-w-md sm:h-80">
         <Image
-          src="/bazar-hero.png"
-          alt="বাজারের পণ্য"
-          fill
-          priority
-          className="object-contain object-right"
-        />
+  src="/bazar-hero.png"
+  alt="বাজারের পণ্যের ঝুড়ি"
+  fill
+  priority
+  sizes="(max-width: 768px) 100vw, 50vw"
+  className="object-contain"
+/>
       </div>
     </section>
   );

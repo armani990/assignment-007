@@ -21,13 +21,20 @@ const API_URL =
 
 export default function Marquee() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getProducts = async () => {
-      const res = await fetch(API_URL);
-      const data: Product[] = await res.json();
+      try {
+        const res = await fetch(API_URL);
+        const data: Product[] = await res.json();
 
-      setProducts(data);
+        setProducts(data);
+      } catch (error) {
+        console.error("Marquee data load করতে সমস্যা হয়েছে:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     getProducts();
@@ -45,6 +52,24 @@ export default function Marquee() {
     pc: "পিস",
     dozen: "ডজন",
   };
+
+  if (loading) {
+    return (
+      <div
+        className="flex h-9 items-center gap-8 overflow-hidden border-y border-gray-100 bg-white px-4"
+        aria-busy="true"
+        aria-label="দামের তথ্য লোড হচ্ছে"
+      >
+        {[32, 40, 36, 44, 32].map((width, index) => (
+          <div
+            key={index}
+            className="h-3 shrink-0 animate-pulse rounded-full bg-gray-200"
+            style={{ width: `${width * 4}px` }}
+          />
+        ))}
+      </div>
+    );
+  }
 
   if (products.length === 0) {
     return null;
@@ -64,7 +89,7 @@ export default function Marquee() {
           return (
             <span
               key={product.id}
-              className="mx-4  whitespace-nowrap"
+              className="mx-4 whitespace-nowrap"
             >
               {product.image} {product.nameBn} —{" "}
               {number.format(product.today)} টাকা/{unit}{" "}
