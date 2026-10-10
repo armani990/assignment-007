@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import NavLinks from "./NavLinks";
 import Marquee from "./Marquee";
 
@@ -55,10 +55,15 @@ export default function Header() {
           </Link>
         </div>
       </div>
-
+      
       {/* Category Links */}
-      <NavLinks />
-
+      <Suspense
+  fallback={
+    <div className="h-14 border-t border-gray-100" />
+  }
+>
+  <NavLinks />
+</Suspense>
       {/* Price Marquee */}
       <Marquee />
     </header>

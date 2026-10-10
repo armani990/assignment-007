@@ -2,20 +2,44 @@ import type { Product } from "@/types/product.type";
 
 const API_URL = "https://api.abcz.workers.dev/api/bazardor/products";
 
-export async function getProducts(): Promise<Product[]> {
-  const response = await fetch(API_URL);
+function readProducts(data: unknown): Product[] {
+  if (Array.isArray(data)) {
+    return data as Product[];
+  }
+
+  if (data && typeof data === "object" && "data" in data) {
+    const items = (data as { data?: unknown }).data;
+
+    if (Array.isArray(items)) {
+      return items as Product[];
+    }
+  }
+
+  throw new Error("API থেকে product list পাওয়া যায়নি");
+}
+
+async function fetchProducts(url: string): Promise<Product[]> {
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error("পণ্যের তথ্য আনা যায়নি");
   }
 
-  const result: Product[] | { data?: Product[] } = await response.json();
+  const data: unknown = await response.json();
+  return readProducts(data);
+}
 
-  const products = Array.isArray(result) ? result : result.data;
+// Home page-এর সব পণ্যের জন্য
+export function getProducts(): Promise<Product[]> {
+  return fetchProducts(API_URL);
+}
 
-  if (!products) {
-    throw new Error("API response-এর format ঠিক নেই");
-  }
+// একটি নির্দিষ্ট category-র পণ্যের জন্য
+export function getProductsByCategory(
+  categorySlug: string
+): Promise<Product[]> {
+  const url = new URL(API_URL);
+  url.searchParams.set("category", categorySlug);
 
-  return products;
+  return fetchProducts(url.toString());
 }
