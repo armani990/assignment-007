@@ -27,9 +27,7 @@ const unitNames: Record<string, string> = {
   dozen: "ডজন",
 };
 
-export default function ProductDetails({
-  slug,
-}: ProductDetailsProps) {
+export default function ProductDetails({ slug }: ProductDetailsProps) {
   const [product, setProduct] = useState<ProductDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -45,22 +43,15 @@ export default function ProductDetails({
       setNotFound(false);
 
       try {
-        // প্রথমে slug দিয়ে product খুঁজব
         const products = await getProducts();
-
-        const matchedProduct = products.find(
-          (item) => item.slug === slug
-        );
+        const matchedProduct = products.find((item) => item.slug === slug);
 
         if (!matchedProduct) {
           setNotFound(true);
           return;
         }
 
-        // এবার product ID দিয়ে details API call করব
-        const data = await getProductById(
-          String(matchedProduct.id)
-        );
+        const data = await getProductById(String(matchedProduct.id));
 
         if (!cancelled) {
           setProduct(data);
@@ -96,7 +87,7 @@ export default function ProductDetails({
 
   if (loading) {
     return (
-      <div className="mx-auto mt-6 w-full max-w-6xl space-y-5 px-4">
+      <div className="mx-auto mt-6 w-full max-w-6xl space-y-5 px-3 sm:px-4">
         <div className="h-5 w-48 animate-pulse rounded bg-gray-200" />
         <div className="h-28 animate-pulse rounded-2xl bg-gray-200" />
         <div className="h-36 animate-pulse rounded-2xl bg-gray-200" />
@@ -107,12 +98,11 @@ export default function ProductDetails({
 
   if (notFound) {
     return (
-      <main className="mx-auto w-full max-w-6xl px-4 py-12">
-        <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center">
-          <h1 className="text-xl font-bold text-gray-900">
+      <main className="mx-auto w-full max-w-6xl px-3 py-12 sm:px-4">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 text-center sm:p-8">
+          <h1 className="text-lg font-bold text-gray-900 sm:text-xl">
             পণ্যটি খুঁজে পাওয়া যায়নি
           </h1>
-
           <Link
             href="/"
             className="mt-5 inline-block rounded-lg bg-green-700 px-5 py-3 text-sm font-semibold text-white hover:bg-green-800"
@@ -126,11 +116,10 @@ export default function ProductDetails({
 
   if (error || !product) {
     return (
-      <main className="mx-auto w-full max-w-6xl px-4 py-8">
+      <main className="mx-auto w-full max-w-6xl px-3 py-8 sm:px-4">
         <p className="text-red-600">
           {error || "পণ্যের তথ্য পাওয়া যায়নি"}
         </p>
-
         <Link
           href="/"
           className="mt-4 inline-block text-sm font-medium text-green-700 hover:underline"
@@ -141,9 +130,7 @@ export default function ProductDetails({
     );
   }
 
-  const unit =
-    unitNames[product.unit.toLowerCase()] ?? product.unit;
-
+  const unit = unitNames[product.unit.toLowerCase()] ?? product.unit;
   const markets = product.markets ?? [];
 
   const minPrice =
@@ -156,12 +143,10 @@ export default function ProductDetails({
       ? Math.max(...markets.map((market) => market.max))
       : null;
 
-  // প্রতিটি বাজারের min ও max-এর মধ্যবর্তী দাম দিয়ে আনুমানিক গড়
   const averagePrice =
     markets.length > 0
       ? markets.reduce(
-          (total, market) =>
-            total + (market.min + market.max) / 2,
+          (total, market) => total + (market.min + market.max) / 2,
           0
         ) / markets.length
       : null;
@@ -188,125 +173,92 @@ export default function ProductDetails({
         : "অপরিবর্তিত";
 
   return (
-    <main className="mx-auto mt-5 w-full max-w-6xl space-y-5 px-4 pb-10">
+    <main className="mx-auto mt-5 w-full max-w-6xl space-y-4 px-3 pb-10 sm:space-y-5 sm:px-4">
       {/* Breadcrumb */}
-      <nav
-        className="text-sm text-gray-500"
-        aria-label="Breadcrumb"
-      >
+      <nav className="text-xs text-gray-500 sm:text-sm" aria-label="Breadcrumb">
         <Link href="/" className="hover:text-green-700">
           হোম
         </Link>
-
         <span className="mx-2">›</span>
-
-        <Link
-          href="/#সব-পণ্য"
-          className="hover:text-green-700"
-        >
+        <Link href="/#সব-পণ্য" className="hover:text-green-700">
           সব পণ্য
         </Link>
-
         <span className="mx-2">›</span>
-
-        <span className="text-gray-700">
-          {product.nameBn}
-        </span>
+        <span className="text-gray-700">{product.nameBn}</span>
       </nav>
 
-      {/* Product summary */}
-      <section className="flex flex-col justify-between gap-5 rounded-2xl border border-green-100 bg-[#fbfdfb] p-5 sm:flex-row sm:items-center sm:p-6">
-        <div className="flex items-center gap-4">
-          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#f0f5f0] text-3xl">
+      {/* Product summary — mobile-এ stack, desktop-এ পাশাপাশি */}
+      <section className="flex flex-col gap-4 rounded-2xl border border-green-100 bg-[#fbfdfb] p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5 sm:p-6">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#f0f5f0] text-2xl sm:h-14 sm:w-14 sm:text-3xl">
             {product.image || product.categoryIcon}
           </span>
 
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+          <div className="min-w-0">
+            <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
               {product.nameBn}
             </h1>
 
-            <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-gray-600">
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs text-gray-600 sm:mt-2 sm:gap-2 sm:text-sm">
               <span>প্রতি {unit}</span>
               <span>•</span>
-
               <span className="rounded-full bg-green-100 px-2 py-0.5 text-green-800">
                 {product.categoryNameBn}
               </span>
             </div>
 
-            <p className="mt-2 text-sm text-gray-600">
+            <p className="mt-1.5 text-xs text-gray-600 sm:mt-2 sm:text-sm">
               আজকের বাজারে দাম{" "}
-              <span className={changeColor}>
-                {changeText}
-              </span>
+              <span className={changeColor}>{changeText}</span>
               {product.change.dir !== "flat" && (
-                <>
-                  {" "}
-                  {percentFormat.format(product.change.pct)}%
-                </>
+                <> {percentFormat.format(product.change.pct)}%</>
               )}
             </p>
           </div>
         </div>
 
-        <div className="rounded-xl bg-white px-5 py-3 text-center shadow-sm">
-          <p className="text-xs text-gray-500">
-            আজকের দাম
-          </p>
-
-          <p className="text-2xl font-bold text-gray-900">
+        <div className="rounded-xl bg-white px-4 py-3 text-center shadow-sm sm:px-5">
+          <p className="text-xs text-gray-500">আজকের দাম</p>
+          <p className="text-xl font-bold text-gray-900 sm:text-2xl">
             {numberFormat.format(product.today)}
           </p>
-
-          <p className="text-xs text-gray-500">
-            টাকা / {unit}
-          </p>
-
+          <p className="text-xs text-gray-500">টাকা / {unit}</p>
           <p className={`mt-1 text-xs font-semibold ${changeColor}`}>
-            {changeArrow}{" "}
-            {percentFormat.format(product.change.pct)}%
+            {changeArrow} {percentFormat.format(product.change.pct)}%
           </p>
         </div>
       </section>
 
-      {/* Price summary */}
+      {/* Price summary — mobile-এ 1 col, desktop-এ 3 col */}
       <section className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5">
-        <h2 className="mb-4 font-bold text-gray-900">
+        <h2 className="mb-3 font-bold text-gray-900 sm:mb-4">
           দামের সারসংক্ষেপ
         </h2>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-gray-200 p-4">
-            <p className="text-sm text-gray-500">
-              সর্বনিম্ন দাম
-            </p>
-
-            <p className="mt-2 font-bold text-green-700">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+          <div className="rounded-xl border border-gray-200 p-3 sm:p-4">
+            <p className="text-xs text-gray-500 sm:text-sm">সর্বনিম্ন দাম</p>
+            <p className="mt-1.5 font-bold text-green-700 sm:mt-2">
               {minPrice === null
                 ? "তথ্য নেই"
                 : `${numberFormat.format(minPrice)} টাকা`}
             </p>
           </div>
 
-          <div className="rounded-xl border border-gray-200 p-4">
-            <p className="text-sm text-gray-500">
-              সর্বোচ্চ দাম
-            </p>
-
-            <p className="mt-2 font-bold text-red-600">
+          <div className="rounded-xl border border-gray-200 p-3 sm:p-4">
+            <p className="text-xs text-gray-500 sm:text-sm">সর্বোচ্চ দাম</p>
+            <p className="mt-1.5 font-bold text-red-600 sm:mt-2">
               {maxPrice === null
                 ? "তথ্য নেই"
                 : `${numberFormat.format(maxPrice)} টাকা`}
             </p>
           </div>
 
-          <div className="rounded-xl border border-gray-200 p-4">
-            <p className="text-sm text-gray-500">
+          <div className="rounded-xl border border-gray-200 p-3 sm:p-4">
+            <p className="text-xs text-gray-500 sm:text-sm">
               আনুমানিক গড় দাম
             </p>
-
-            <p className="mt-2 font-bold text-gray-900">
+            <p className="mt-1.5 font-bold text-gray-900 sm:mt-2">
               {averagePrice === null
                 ? "তথ্য নেই"
                 : `${numberFormat.format(Math.round(averagePrice))} টাকা`}
@@ -314,14 +266,15 @@ export default function ProductDetails({
           </div>
         </div>
 
-        <p className="mt-3 text-xs text-gray-500">
-          গড় দাম বাজারগুলোর সর্বনিম্ন ও সর্বোচ্চ দামের মধ্যবর্তী মান থেকে হিসাব করা হয়েছে।
+        <p className="mt-3 text-[11px] text-gray-500 sm:text-xs">
+          গড় দাম বাজারগুলোর সর্বনিম্ন ও সর্বোচ্চ দামের মধ্যবর্তী মান থেকে
+          হিসাব করা হয়েছে।
         </p>
       </section>
 
-      {/* Market-wise prices */}
+      {/* Market-wise prices — mobile-এ horizontal scroll */}
       <section className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5">
-        <h2 className="mb-4 font-bold text-gray-900">
+        <h2 className="mb-3 font-bold text-gray-900 sm:mb-4">
           বাজারভিত্তিক আজকের দাম
         </h2>
 
@@ -331,26 +284,22 @@ export default function ProductDetails({
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[650px] border-collapse text-left text-sm">
+            <table className="w-full min-w-[600px] border-collapse text-left text-xs sm:text-sm">
               <thead>
                 <tr className="border-b border-gray-200 text-gray-500">
-                  <th className="px-3 py-3 font-medium">
+                  <th className="px-2 py-2.5 font-medium sm:px-3 sm:py-3">
                     বাজার
                   </th>
-
-                  <th className="px-3 py-3 font-medium">
+                  <th className="px-2 py-2.5 font-medium sm:px-3 sm:py-3">
                     বিভাগ
                   </th>
-
-                  <th className="px-3 py-3 font-medium">
+                  <th className="px-2 py-2.5 font-medium sm:px-3 sm:py-3">
                     সর্বনিম্ন
                   </th>
-
-                  <th className="px-3 py-3 font-medium">
+                  <th className="px-2 py-2.5 font-medium sm:px-3 sm:py-3">
                     সর্বোচ্চ
                   </th>
-
-                  <th className="px-3 py-3 font-medium">
+                  <th className="px-2 py-2.5 font-medium sm:px-3 sm:py-3">
                     গড়
                   </th>
                 </tr>
@@ -365,29 +314,21 @@ export default function ProductDetails({
                   return (
                     <tr
                       key={`${market.market}-${index}`}
-                      className={
-                        index % 2 === 0
-                          ? "bg-white"
-                          : "bg-[#f7f9f7]"
-                      }
+                      className={index % 2 === 0 ? "bg-white" : "bg-[#f7f9f7]"}
                     >
-                      <td className="px-3 py-3">
+                      <td className="px-2 py-2.5 sm:px-3 sm:py-3">
                         {market.market}
                       </td>
-
-                      <td className="px-3 py-3">
+                      <td className="px-2 py-2.5 sm:px-3 sm:py-3">
                         {market.division}
                       </td>
-
-                      <td className="px-3 py-3 text-green-700">
+                      <td className="px-2 py-2.5 text-green-700 sm:px-3 sm:py-3">
                         {numberFormat.format(market.min)} টাকা
                       </td>
-
-                      <td className="px-3 py-3 text-red-600">
+                      <td className="px-2 py-2.5 text-red-600 sm:px-3 sm:py-3">
                         {numberFormat.format(market.max)} টাকা
                       </td>
-
-                      <td className="px-3 py-3">
+                      <td className="px-2 py-2.5 sm:px-3 sm:py-3">
                         {numberFormat.format(marketAverage)} টাকা
                       </td>
                     </tr>

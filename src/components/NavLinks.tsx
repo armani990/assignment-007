@@ -24,7 +24,6 @@ export default function NavLinks() {
       try {
         const res = await fetch(API_URL);
         const data: Category[] = await res.json();
-
         setCategories(data);
       } catch (error) {
         console.error("Category load করতে সমস্যা হয়েছে:", error);
@@ -32,7 +31,6 @@ export default function NavLinks() {
         setLoading(false);
       }
     };
-
     getCategories();
   }, []);
 
@@ -42,19 +40,20 @@ export default function NavLinks() {
       aria-busy={loading}
       aria-label="পণ্যের ক্যাটাগরি"
     >
-      <div className="mx-auto flex max-w-6xl gap-4 overflow-x-auto px-4 py-3">
+      {/* ✅ Responsive: scrollbar লুকানো, ছোট স্ক্রিনে gap কম */}
+      <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-3 py-2 sm:gap-4 sm:px-4 sm:py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {loading
           ? Array.from({ length: 7 }).map((_, index) => (
               <div
                 key={index}
-                className="h-9 w-16 shrink-0 animate-pulse rounded-full bg-gray-100"
+                className="h-8 w-16 shrink-0 animate-pulse rounded-full bg-gray-100 sm:h-9"
               />
             ))
           : categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/category/${category.slug}`}
-                className={`whitespace-nowrap rounded-full px-3 py-2 text-sm ${
+                className={`whitespace-nowrap rounded-full px-2.5 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm ${
                   pathname === `/category/${category.slug}`
                     ? "bg-green-100 font-semibold text-green-800"
                     : "text-gray-700 hover:bg-gray-100"

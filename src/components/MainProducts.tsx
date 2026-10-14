@@ -27,7 +27,8 @@ export default function MainProducts({
 
   return (
     <section id="সব-পণ্য" className="mt-10 scroll-mt-24">
-      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+      {/* ✅ Responsive: মোবাইলে stack */}
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
         <div>
           <h2 className="font-bold text-gray-900">সব পণ্য</h2>
           <p className="mt-1 text-xs text-gray-500">
@@ -39,14 +40,13 @@ export default function MainProducts({
           <label htmlFor="product-sort" className="text-gray-600">
             সাজান:
           </label>
-
           <select
             id="product-sort"
             value={sortBy}
             onChange={(event) =>
               setSortBy(event.target.value as SortOption)
             }
-            className="rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm outline-none focus:border-green-700"
+            className="flex-1 rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm outline-none focus:border-green-700 sm:flex-none"
           >
             <option value="default">ডিফল্ট</option>
             <option value="low-to-high">দাম: কম থেকে বেশি</option>
@@ -55,6 +55,7 @@ export default function MainProducts({
         </div>
       </div>
 
+      {/* ✅ Responsive: mobile-এ 1 col, tablet-এ 2, desktop-এ 3 */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {sortedProducts.map((product) => (
           <ProductCard key={product.id} product={product} />

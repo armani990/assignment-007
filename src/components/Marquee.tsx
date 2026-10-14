@@ -28,7 +28,6 @@ export default function Marquee() {
       try {
         const res = await fetch(API_URL);
         const data: Product[] = await res.json();
-
         setProducts(data);
       } catch (error) {
         console.error("Marquee data load করতে সমস্যা হয়েছে:", error);
@@ -36,7 +35,6 @@ export default function Marquee() {
         setLoading(false);
       }
     };
-
     getProducts();
   }, []);
 
@@ -56,7 +54,7 @@ export default function Marquee() {
   if (loading) {
     return (
       <div
-        className="flex h-9 items-center gap-8 overflow-hidden border-y border-gray-100 bg-white px-4"
+        className="flex h-8 items-center gap-8 overflow-hidden border-y border-gray-100 bg-white px-4 sm:h-9"
         aria-busy="true"
         aria-label="দামের তথ্য লোড হচ্ছে"
       >
@@ -77,8 +75,9 @@ export default function Marquee() {
 
   return (
     <div className="border-y border-gray-100 bg-white">
+      {/* ✅ Responsive: mobile-এ text-xs, desktop-এ text-sm */}
       <MarqueeText
-        className="py-1 text-sm text-black"
+        className="py-1 text-xs text-black sm:text-sm"
         direction="right"
         duration={10}
       >
@@ -89,7 +88,7 @@ export default function Marquee() {
           return (
             <span
               key={product.id}
-              className="mx-4 whitespace-nowrap"
+              className="mx-3 whitespace-nowrap sm:mx-4"
             >
               {product.image} {product.nameBn} —{" "}
               {number.format(product.today)} টাকা/{unit}{" "}
@@ -110,7 +109,7 @@ export default function Marquee() {
                 {number.format(product.change.pct)}%
               </span>
 
-              <span className="mx-4 text-gray-300">•</span>
+              <span className="mx-3 text-gray-300 sm:mx-4">•</span>
             </span>
           );
         })}

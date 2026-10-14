@@ -42,28 +42,32 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="block rounded-xl border border-[#dce5dd] bg-white p-3 transition hover:-translate-y-0.5 hover:shadow-md"
+      className="block rounded-xl border border-[#dce5dd] bg-white p-2.5 transition hover:-translate-y-0.5 hover:shadow-md sm:p-3"
     >
-      <div className="flex items-center gap-3">
-        <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#f2f6f2] text-xl">
+      <div className="flex items-center gap-2 sm:gap-3">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#f2f6f2] text-lg sm:h-10 sm:w-10 sm:text-xl">
           {product.image || product.categoryIcon}
         </span>
 
-        <div>
-          <h3 className="font-semibold text-gray-900">{product.nameBn}</h3>
-          <p className="text-xs text-gray-500">প্রতি {unit}</p>
+        <div className="min-w-0">
+          <h3 className="truncate text-sm font-semibold text-gray-900 sm:text-base">
+            {product.nameBn}
+          </h3>
+          <p className="text-[11px] text-gray-500 sm:text-xs">
+            প্রতি {unit}
+          </p>
         </div>
       </div>
 
-      <div className="mt-3 flex items-end justify-between gap-2">
+      <div className="mt-2.5 flex items-end justify-between gap-2 sm:mt-3">
         <div>
-          <p className="text-xs text-gray-500">আজকের দাম</p>
-          <p className="font-semibold text-gray-900">
+          <p className="text-[11px] text-gray-500 sm:text-xs">আজকের দাম</p>
+          <p className="text-sm font-semibold text-gray-900 sm:text-base">
             {priceFormat.format(product.today)} টাকা
           </p>
         </div>
 
-        <span className={`whitespace-nowrap text-xs font-semibold ${changeColor}`}>
+        <span className={`whitespace-nowrap text-[11px] font-semibold sm:text-xs ${changeColor}`}>
           {arrow} {percentFormat.format(product.change.pct)}%
         </span>
       </div>
