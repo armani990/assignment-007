@@ -3,17 +3,15 @@ import { getSessionCookie } from "better-auth/cookies";
 
 const PROTECTED_ROUTES = ["/product", "/profile"];
 
-export function middleware(request: NextRequest): NextResponse {
+export function proxy(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
 
-  const isProtected = PROTECTED_ROUTES.some((route) =>
-    pathname.startsWith(route)
-  );
-
-  if (!isProtected) {
+ 
+  if (!PROTECTED_ROUTES.some((route) => pathname.startsWith(route))) {
     return NextResponse.next();
   }
 
+  
   const sessionCookie = getSessionCookie(request);
 
   if (!sessionCookie) {
