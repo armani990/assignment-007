@@ -25,7 +25,7 @@ const db = client.db("bazar-dhor-app");
 export const auth = betterAuth({
   appName: "বাজার দর",
   secret,
-  baseURL: "http://localhost:3000",
+  baseURL: "https://bazar-dor-assignment-007.vercel.app",
 
   database: mongodbAdapter(db, {
     client,
